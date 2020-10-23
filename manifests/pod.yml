@@ -1,0 +1,21 @@
+kind: Pod  
+apiVersion: v1  
+metadata:  
+  name: test-pod
+spec:  
+  containers:
+  - name: test-pod
+    image: pistacks/alpine
+    command:
+      - "/bin/sh"
+    args:
+      - "-c"
+      - "echo $HOSTNAME > /nfsdata/ok.txt && exit 0 || exit 1"
+    volumeMounts:
+      - name: nfs-pvc
+        mountPath: "/nfsdata"
+  restartPolicy: "Never"
+  volumes:
+    - name: nfs-pvc
+      persistentVolumeClaim:
+        claimName: nfs-claim-one
