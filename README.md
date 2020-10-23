@@ -3,7 +3,13 @@ Kubernetes NFS Client Provisioner on ARM
 
 ## Usage
 
-
+```
+$ kubectl apply -f manifests/rbac.yml
+$ kubectl apply -f manifests/deployment-arm.yml
+$ kubectl apply -f manifests/class.yml
+$ kubectl apply -f manifests/pvc.yml
+$ kubectl apply -f manifests/pod.yml
+```
 
 ## Instructions
 
