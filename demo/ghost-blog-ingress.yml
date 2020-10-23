@@ -1,0 +1,36 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: blog-demo-service
+spec:
+  selector:
+    app: blog-demo
+  ports:
+  - name: blog-demo-http
+    port: 80
+    targetPort: 2368
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: blog-demo-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    ingress.kubernetes.io/ssl-redirect: "true"
+    traefik.backend.loadbalancer.stickiness: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+    - secretName: blog-demo-domain-com-tls
+      hosts:
+        - blog-demo.domain.com
+  rules:
+  - host: blog-demo.domain.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: blog-demo-service
+          servicePort: blog-demo-http
